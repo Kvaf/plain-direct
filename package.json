@@ -1,13 +1,43 @@
 {
   "name": "plain-direct",
   "version": "1.0.0",
+  "private": true,
+  "type": "module",
   "scripts": {
-    "start": "node server.js"
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:server": "node --watch server/index.js",
+    "dev:client": "vite",
+    "build": "vite build",
+    "start": "node server/index.js",
+    "preview": "vite preview"
   },
   "dependencies": {
     "express": "^4.18.2",
-    "bcryptjs": "^2.4.3",
-    "jsonwebtoken": "^9.0.2",
-    "cookie-parser": "^1.4.6"
+    "cors": "^2.8.5",
+    "imap": "^0.8.19",
+    "mailparser": "^3.6.5",
+    "xml2js": "^0.6.2",
+    "node-cron": "^3.0.3",
+    "better-sqlite3": "^9.4.3",
+    "zlib": "^1.0.5",
+    "dotenv": "^16.3.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.21.1",
+    "recharts": "^2.10.3",
+    "lucide-react": "^0.303.0",
+    "date-fns": "^3.2.0",
+    "framer-motion": "^10.18.0",
+    "country-flag-emoji-polyfill": "^0.1.8"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.1",
+    "vite": "^5.0.11",
+    "concurrently": "^8.2.2",
+    "tailwindcss": "^3.4.1",
+    "postcss": "^8.4.33",
+    "autoprefixer": "^10.4.16",
+    "@types/react": "^18.2.47",
+    "@types/react-dom": "^18.2.18"
   }
 }

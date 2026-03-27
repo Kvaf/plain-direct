@@ -1,14 +1,30 @@
-FROM node:20-alpine
+FROM node:20-slim
 
 WORKDIR /app
 
-COPY package*.json ./
-RUN npm ci --omit=dev
+# Install build dependencies for better-sqlite3
+RUN apt-get update && apt-get install -y python3 make g++ && rm -rf /var/lib/apt/lists/*
 
+# Copy package files
+COPY package.json package-lock.json* ./
+
+# Install all dependencies (including dev for build)
+RUN npm install
+
+# Copy source
 COPY . .
 
-RUN mkdir -p /app/data/reports
+# Build frontend
+RUN npm run build
 
-EXPOSE 3004
+# Create data directory
+RUN mkdir -p /app/data
 
-CMD ["node", "server.js"]
+# Set production
+ENV NODE_ENV=production
+
+# Expose port
+EXPOSE ${PORT:-3004}
+
+# Start server
+CMD ["node", "server/index.js"]
