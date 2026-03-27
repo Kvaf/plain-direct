@@ -1001,9 +1001,22 @@ app.get('*', (req, res) => {
   res.redirect('/login');
 });
 
+// Auto-seed admin user if volume is empty
+function seedAdminIfNeeded() {
+  const users = loadUsers();
+  if (users.length === 0) {
+    const seedEmail = process.env.ADMIN_EMAIL || 'admin@plain.direct';
+    const seedPass = process.env.ADMIN_PASSWORD || 'admin123';
+    const hash = bcrypt.hashSync(seedPass, 12);
+    const admin = { id: Date.now(), email: seedEmail, password_hash: hash, name: '', role: 'admin', domains: [], created_at: new Date().toISOString(), last_login: null };
+    saveUsers([admin]);
+    console.log('Seeded admin user: ' + seedEmail);
+  }
+}
+
+seedAdminIfNeeded();
+
 app.listen(PORT, () => {
   console.log('PlainDMARC portal on port ' + PORT);
-  const users = loadUsers();
-  if (users.length === 0) console.log('No users! Run: node scripts/create-user.js admin@example.com Password admin');
-  else console.log(users.length + ' user(s) loaded');
+  console.log(loadUsers().length + ' user(s) loaded');
 });
