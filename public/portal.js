@@ -185,7 +185,7 @@ function dnsRow(status, label, detail, ok) {
 }
 
 function dnsCode(record) {
-  return '<div style="background:var(--bg);border:1px solid var(--border);padding:0.5rem 0.8rem;font-size:0.68rem;color:var(--green);word-break:break-all;font-family:\'IBM Plex Mono\',monospace">' + record + '</div>';
+  return '<div style="background:var(--bg);border:1px solid var(--border);padding:0.5rem 0.8rem;font-size:0.68rem;color:var(--green);word-break:break-all;font-family:\'Space Mono\',monospace">' + record + '</div>';
 }
 
 // ── DNS CHECK MODAL ──
@@ -311,7 +311,7 @@ function buildAnalysis(d) {
       var pass_pct = s.total > 0 ? Math.round((s.pass/s.total)*100) : 0;
       var c = pass_pct >= 90 ? 'var(--green)' : pass_pct >= 50 ? 'var(--orange)' : 'var(--red)';
       html += '<div style="display:flex;justify-content:space-between;font-size:0.72rem;padding:0.3rem 0;border-bottom:1px solid var(--border)">';
-      html += '<span style="font-family:IBM Plex Mono,monospace">' + s.ip + '</span>';
+      html += '<span style="font-family:Space Mono,monospace">' + s.ip + '</span>';
       html += '<span>' + s.total.toLocaleString() + ' msgs &nbsp; <span style="color:' + c + '">' + pass_pct + '% pass</span></span>';
       html += '</div>';
     });
@@ -324,7 +324,7 @@ function buildAnalysis(d) {
     html += '<div style="font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--orange);margin-bottom:0.6rem">&#8722; Senders No Longer Seen (' + d.missing_senders.length + ')</div>';
     d.missing_senders.forEach(function(s) {
       html += '<div style="display:flex;justify-content:space-between;font-size:0.72rem;padding:0.3rem 0;border-bottom:1px solid var(--border)">';
-      html += '<span style="font-family:IBM Plex Mono,monospace">' + s.ip + '</span>';
+      html += '<span style="font-family:Space Mono,monospace">' + s.ip + '</span>';
       html += '<span style="color:var(--muted)">Last seen: ' + (s.last_seen||'').slice(0,10) + '</span>';
       html += '</div>';
     });
@@ -338,7 +338,7 @@ function buildAnalysis(d) {
     d.threats.forEach(function(s) {
       var fail_pct = s.total > 0 ? Math.round((s.fail/s.total)*100) : 0;
       html += '<div style="display:flex;justify-content:space-between;font-size:0.72rem;padding:0.3rem 0;border-bottom:1px solid var(--border)">';
-      html += '<span style="font-family:IBM Plex Mono,monospace">' + s.ip + '</span>';
+      html += '<span style="font-family:Space Mono,monospace">' + s.ip + '</span>';
       html += '<span>' + s.total.toLocaleString() + ' msgs &nbsp; <span style="color:var(--red)">' + fail_pct + '% fail</span></span>';
       html += '</div>';
     });
@@ -355,7 +355,7 @@ function buildAnalysis(d) {
       var pass_pct = s.total > 0 ? Math.round((s.pass/s.total)*100) : 0;
       var c = pass_pct >= 95 ? 'var(--green)' : pass_pct >= 70 ? 'var(--orange)' : 'var(--red)';
       html += '<div style="display:grid;grid-template-columns:1fr auto auto;gap:0 1rem;font-size:0.7rem;padding:0.35rem 0;border-bottom:1px solid var(--border)">';
-      html += '<span style="font-family:IBM Plex Mono,monospace;color:var(--text)">' + s.ip + '</span>';
+      html += '<span style="font-family:Space Mono,monospace;color:var(--text)">' + s.ip + '</span>';
       html += '<span style="color:var(--muted2)">' + s.total.toLocaleString() + '</span>';
       html += '<span style="color:' + c + '">' + pass_pct + '%</span>';
       html += '</div>';
@@ -369,7 +369,7 @@ function buildAnalysis(d) {
 
 function kpiCell(val, lbl, color) {
   return '<div style="background:var(--bg1);padding:0.8rem 1rem">' +
-    '<div style="font-family:Bebas Neue,sans-serif;font-size:1.4rem;color:' + color + ';line-height:1">' + val + '</div>' +
+    '<div style="font-family:Space Mono,monospace;font-size:1.4rem;color:' + color + ';line-height:1">' + val + '</div>' +
     '<div style="font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-top:0.2rem">' + lbl + '</div>' +
     '</div>';
 }
@@ -542,7 +542,7 @@ document.getElementById('btn-verify').addEventListener('click', function() {
       var res = document.getElementById('verify-result');
       res.style.display = 'block';
       res.style.color = 'var(--green)';
-      res.innerHTML = '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.1rem;margin-bottom:0.4rem">DNS check complete — ' + domain + '</div>' +
+      res.innerHTML = '<div style="font-family:\'Space Mono\',monospace;font-size:1.1rem;margin-bottom:0.4rem">DNS check complete — ' + domain + '</div>' +
         '<div style="color:var(--muted2);font-size:0.7rem;margin-bottom:0.8rem">Add domain to your account to start receiving reports.</div>' +
         '<div style="display:flex;gap:0.6rem">' +
         '<button class="btn btn-a" onclick="finishAddDomain(\'' + domain + '\')">Add Domain</button>' +
@@ -915,7 +915,7 @@ function loadSourcesPage() {
       var spfRate = s.total > 0 ? Math.round((s.spf_pass/s.total)*100) : 0;
       var dkimRate = s.total > 0 ? Math.round((s.dkim_pass/s.total)*100) : 0;
       return '<tr>' +
-        '<td style="font-family:\'IBM Plex Mono\',monospace">' + s.ip + '</td>' +
+        '<td style="font-family:\'Space Mono\',monospace">' + s.ip + '</td>' +
         '<td>' + (s.domain || '—') + '</td>' +
         '<td>' + s.total.toLocaleString() + '</td>' +
         '<td><span class="tag ' + (spfRate >= 90 ? 'tp' : spfRate >= 50 ? 'tw' : 'tf') + '">' + spfRate + '%</span></td>' +
@@ -1017,7 +1017,7 @@ function loadDashboardSources() {
       var passRate = s.total > 0 ? Math.round((s.pass/s.total)*100) : 0;
       var status = passRate >= 90 ? '<span class="tag tp">Pass</span>' : '<span class="tag tf">Fail</span>';
       return '<tr>' +
-        '<td style="font-size:0.72rem;font-family:\'IBM Plex Mono\',monospace">' + s.ip + '</td>' +
+        '<td style="font-size:0.72rem;font-family:\'Space Mono\',monospace">' + s.ip + '</td>' +
         '<td style="color:var(--muted2)">' + (s.domain || '—') + '</td>' +
         '<td>' + s.total.toLocaleString() + '</td>' +
         '<td>' + status + '</td>' +

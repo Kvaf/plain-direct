@@ -507,11 +507,13 @@ function getPortalHTML() {
 <title>Plain DMARC Portal</title>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-:root{--bg:#050507;--bg1:#0a0a0f;--bg2:#0f0f17;--bg3:#16161f;--border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.10);--accent:#e63329;--red:#e63329;--orange:#ff8c00;--green:#4ade80;--blue:#29b6f6;--text:#f0f0f5;--muted:#555;--muted2:#888}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap');
+:root{--bg:#050507;--bg1:#0a0b0f;--bg2:#111218;--bg3:#1a1b23;--border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.12);--accent:#4ade80;--accent-dim:rgba(74,222,128,0.15);--red:#ef4444;--orange:#f59e0b;--green:#4ade80;--blue:#818cf8;--text:#f0f0f5;--muted:#5a5d6e;--muted2:#8b8fa3}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:14px;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(ellipse at 20% 50%,rgba(230,51,41,0.03) 0%,transparent 70%);pointer-events:none;z-index:0}
+body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(ellipse at 20% 50%,rgba(74,222,128,0.03) 0%,transparent 70%);pointer-events:none;z-index:0}
+::selection{background:var(--accent-dim);color:var(--accent)}
+::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-track{background:var(--bg1)}::-webkit-scrollbar-thumb{background:var(--muted);border-radius:3px}
 a{text-decoration:none;color:inherit}
 .topbar{height:52px;border-bottom:1px solid var(--border);background:var(--bg1);display:flex;align-items:center;padding:0 1.5rem;gap:1rem;position:sticky;top:0;z-index:50;flex-shrink:0;backdrop-filter:blur(12px)}
 .logo{font-size:1.1rem;font-weight:700;letter-spacing:-0.02em;white-space:nowrap}
@@ -519,7 +521,7 @@ a{text-decoration:none;color:inherit}
 .topbar-nav{display:flex;list-style:none;gap:0;margin-left:1rem}
 .topbar-nav li a{display:block;padding:0 1rem;height:52px;line-height:52px;font-size:0.75rem;font-weight:500;letter-spacing:0.04em;text-transform:uppercase;color:var(--muted2);cursor:pointer;transition:color 0.15s,background 0.15s;border-right:1px solid var(--border)}
 .topbar-nav li a:hover{color:var(--text);background:rgba(255,255,255,0.02)}
-.topbar-nav li a.active{color:var(--accent);background:rgba(230,51,41,0.06)}
+.topbar-nav li a.active{color:var(--accent);background:var(--accent-dim)}
 .topbar-right{margin-left:auto;display:flex;align-items:center;gap:1rem}
 .status-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 2s infinite}
 .domain-select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);font-family:'Inter',sans-serif;font-size:0.75rem;padding:0.35rem 0.7rem;outline:none;cursor:pointer;border-radius:4px}
@@ -529,29 +531,29 @@ a{text-decoration:none;color:inherit}
 .sidebar-lbl{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);padding:0 1rem 0.5rem;font-weight:600}
 .sidebar-item{display:flex;align-items:center;gap:0.6rem;padding:0.5rem 1rem;font-size:0.78rem;color:var(--muted2);cursor:pointer;transition:all 0.15s;border-left:2px solid transparent;font-weight:400}
 .sidebar-item:hover{color:var(--text);background:rgba(255,255,255,0.03)}
-.sidebar-item.active{color:var(--accent);border-left-color:var(--accent);background:rgba(230,51,41,0.06)}
+.sidebar-item.active{color:var(--accent);border-left-color:var(--accent);background:var(--accent-dim)}
 .sidebar-badge{margin-left:auto;background:var(--red);color:#fff;font-size:0.6rem;padding:0.15rem 0.45rem;border-radius:3px;font-weight:600}
 .main{flex:1;overflow-y:auto;padding:1.5rem;display:flex;flex-direction:column;gap:1.5rem}
 .pview{display:none;flex-direction:column;gap:1.5rem}
 .pview.active{display:flex;animation:fadeIn 0.25s ease both}
 .page-hdr{display:flex;align-items:flex-end;justify-content:space-between;padding-bottom:1rem;border-bottom:1px solid var(--border)}
-.page-title{font-size:1.8rem;font-weight:700;letter-spacing:-0.02em;line-height:1}
+.page-title{font-size:1.8rem;font-weight:800;letter-spacing:-0.5px;line-height:1}
 .page-sub{font-size:0.72rem;color:var(--muted2);margin-top:0.3rem}
 .page-acts{display:flex;gap:0.6rem}
 .btn{padding:0.45rem 1rem;font-family:'Inter',sans-serif;font-size:0.75rem;border:none;cursor:pointer;transition:all 0.15s;border-radius:4px;font-weight:500}
-.btn-a{background:var(--accent);color:#fff;font-weight:600}
+.btn-a{background:var(--accent);color:#050507;font-weight:600}
 .btn-a:hover{opacity:0.85}
 .btn-g{background:transparent;border:1px solid var(--border2);color:var(--muted2)}
 .btn-g:hover{color:var(--text);border-color:var(--muted2)}
 .btn-d{background:transparent;border:1px solid var(--red);color:var(--red)}
-.btn-d:hover{background:rgba(230,51,41,0.08)}
+.btn-d:hover{background:rgba(239,68,68,0.08)}
 .kpi-row{display:grid;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:6px;overflow:hidden}
 .kpi-5{grid-template-columns:repeat(5,1fr)}
 .kpi-4{grid-template-columns:repeat(4,1fr)}
 .kpi{background:var(--bg1);padding:1.2rem 1.4rem;display:flex;flex-direction:column;gap:0.3rem}
 .kpi:hover{background:var(--bg2)}
 .kpi-lbl{font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
-.kpi-val{font-size:1.8rem;font-weight:700;line-height:1;letter-spacing:-0.02em}
+.kpi-val{font-family:'Space Mono',monospace;font-size:1.8rem;font-weight:700;line-height:1;letter-spacing:-0.02em}
 .kpi-d{font-size:0.68rem}
 .kpi-d.up{color:var(--green)}.kpi-d.dn{color:var(--red)}.kpi-d.nt{color:var(--muted2)}
 .kpi-bar{height:2px;background:var(--border);margin-top:0.5rem;position:relative;overflow:hidden;border-radius:1px}
@@ -564,7 +566,7 @@ a{text-decoration:none;color:inherit}
 .panel-body{padding:1.2rem;flex:1}
 .tag{display:inline-block;padding:0.15rem 0.5rem;font-size:0.62rem;letter-spacing:0.06em;text-transform:uppercase;font-weight:600;border-radius:3px}
 .tp{background:rgba(74,222,128,0.12);color:var(--green)}
-.tf{background:rgba(230,51,41,0.12);color:var(--red)}
+.tf{background:rgba(239,68,68,0.12);color:var(--red)}
 .tw{background:rgba(255,140,0,0.12);color:var(--orange)}
 .tn{background:rgba(255,255,255,0.06);color:var(--muted2)}
 .ti{background:rgba(41,182,246,0.12);color:var(--blue)}
@@ -590,21 +592,21 @@ tbody tr:last-child td{border-bottom:none}
 .spark-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border-radius:4px;overflow:hidden}
 .spark-cell{background:var(--bg1);padding:1rem}
 .spark-ttl{font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:0.4rem;font-weight:600}
-.spark-v{font-size:1.4rem;font-weight:700;letter-spacing:-0.02em}
+.spark-v{font-family:'Space Mono',monospace;font-size:1.4rem;font-weight:700;letter-spacing:-0.02em}
 svg.spark{width:100%;height:36px;margin-top:0.5rem}
 .dom-cards{display:flex;flex-direction:column;gap:1px;background:var(--border);border-radius:6px;overflow:hidden}
 .dom-card{background:var(--bg1);padding:1.4rem;display:flex;align-items:center;gap:1.5rem;transition:background 0.15s;flex-wrap:wrap}
 .dom-card:hover{background:var(--bg2)}
-.dom-name{font-size:1.2rem;font-weight:700;min-width:160px;letter-spacing:-0.01em}
+.dom-name{font-family:'Space Mono',monospace;font-size:1.2rem;font-weight:700;min-width:160px;letter-spacing:-0.01em}
 .dom-tags{display:flex;gap:0.4rem;flex-wrap:wrap}
 .dom-stats{margin-left:auto;display:flex;gap:1.5rem}
 .dom-stat{text-align:right}
-.dom-stat-v{font-size:1.1rem;font-weight:700}
+.dom-stat-v{font-family:'Space Mono',monospace;font-size:1.1rem;font-weight:700}
 .dom-stat-l{font-size:0.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;font-weight:500}
 .dom-acts{display:flex;gap:0.4rem}
 .pol-chip{flex:1;padding:0.8rem 1rem;background:var(--bg2);border:1px solid var(--border);display:flex;flex-direction:column;gap:0.3rem;border-radius:4px}
 .pol-lbl{font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
-.pol-val{font-size:1.1rem;font-weight:700}
+.pol-val{font-family:'Space Mono',monospace;font-size:1.1rem;font-weight:700}
 .modal-ov{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:200;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
 .modal-ov.open{display:flex}
 .modal{background:var(--bg1);border:1px solid var(--border2);width:560px;max-width:90vw;max-height:85vh;display:flex;flex-direction:column;border-radius:8px;overflow:hidden}
@@ -638,7 +640,6 @@ svg.spark{width:100%;height:36px;margin-top:0.5rem}
 .status-bar-left{display:flex;align-items:center;gap:0.8rem}
 @keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 6px var(--green)}50%{opacity:0.5;box-shadow:0 0 12px var(--green)}}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-::-webkit-scrollbar{width:4px;height:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--bg3);border-radius:2px}
 @media(max-width:1100px){.kpi-5{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:1fr}.sidebar{display:none}}
 @media(max-width:640px){.kpi-5,.kpi-4{grid-template-columns:1fr 1fr}.topbar-nav{display:none}.spark-grid{grid-template-columns:1fr}}
 </style>
@@ -944,7 +945,7 @@ svg.spark{width:100%;height:36px;margin-top:0.5rem}
   <div class="modal">
     <div class="modal-hdr"><div class="modal-ttl">Add User</div><button class="modal-cls" id="modal-user-close">x</button></div>
     <div class="modal-body">
-      <div id="user-modal-error" style="display:none;background:rgba(230,51,41,0.08);border:1px solid rgba(230,51,41,0.25);color:var(--red);font-size:0.72rem;padding:0.6rem 0.8rem;border-radius:4px"></div>
+      <div id="user-modal-error" style="display:none;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.25);color:var(--red);font-size:0.72rem;padding:0.6rem 0.8rem;border-radius:4px"></div>
       <div class="fgroup"><div class="flabel">Email</div><input class="finput" id="u-email" type="text" placeholder="user@company.com"/></div>
       <div class="fgroup"><div class="flabel">Name (optional)</div><input class="finput" id="u-name" type="text"/></div>
       <div class="fgroup"><div class="flabel">Password</div><input class="finput" id="u-pass" type="password" placeholder="Min. 6 characters"/></div>
