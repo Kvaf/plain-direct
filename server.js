@@ -142,7 +142,7 @@ app.get('/health', (req, res) => {
 
 // ── AUTH ──
 app.get('/login', (req, res) => {
-  try { if (req.cookies.token) { jwt.verify(req.cookies.token, JWT_SECRET); return res.redirect('/'); } } catch(e) {}
+  try { if (req.cookies.token) { jwt.verify(req.cookies.token, JWT_SECRET); return res.redirect('/dashboard'); } } catch(e) {}
   res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
@@ -156,7 +156,7 @@ app.post('/login', (req, res) => {
   if (idx >= 0) { users[idx].last_login = new Date().toISOString(); saveUsers(users); }
   const token = jwt.sign({ id: user.id, email: user.email, role: user.role, name: user.name || '' }, JWT_SECRET, { expiresIn: '7d' });
   res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'lax', maxAge: 7*24*60*60*1000 });
-  res.redirect('/');
+  res.redirect('/dashboard');
 });
 
 app.get('/logout', (req, res) => { res.clearCookie('token'); res.redirect('/login'); });
@@ -481,10 +481,21 @@ app.patch('/api/admin/users/:id/password', requireAuth, requireAdmin, (req, res)
 });
 
 // ── SERVE PORTAL ──
-app.get('/', requireAuth, (req, res) => {
+app.get('/dashboard', requireAuth, (req, res) => {
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   res.setHeader('Cache-Control', 'no-store');
   res.send(getPortalHTML());
+});
+
+// Landing page for unauthenticated, dashboard for authenticated
+app.get('/', (req, res) => {
+  try {
+    if (req.cookies.token) {
+      jwt.verify(req.cookies.token, JWT_SECRET);
+      return res.redirect('/dashboard');
+    }
+  } catch(e) {}
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 function getPortalHTML() {
@@ -997,8 +1008,8 @@ app.get('/portal.js', requireAuth, (req, res) => {
 app.use(express.static(path.join(__dirname, 'public'), { index: false }));
 
 app.get('*', (req, res) => {
-  try { if (req.cookies.token) { jwt.verify(req.cookies.token, JWT_SECRET); return res.redirect('/'); } } catch(e) {}
-  res.redirect('/login');
+  try { if (req.cookies.token) { jwt.verify(req.cookies.token, JWT_SECRET); return res.redirect('/dashboard'); } } catch(e) {}
+  res.redirect('/');
 });
 
 // Auto-seed admin user if volume is empty
