@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Plain DMARC — Login</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:#050507;color:#f0f0f5;font-family:'Inter',system-ui,sans-serif;font-size:14px;display:flex;flex-direction:column;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(ellipse at 50% 40%,rgba(230,51,41,0.04) 0%,transparent 70%);pointer-events:none;z-index:0}
+
+.page{flex:1;display:flex;align-items:center;justify-content:center;padding:2rem;position:relative;z-index:1}
+
+.page::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
+
+.login-wrap{width:100%;max-width:420px;position:relative;z-index:1}
+
+.login-logo{font-size:1.4rem;font-weight:700;letter-spacing:-0.02em;margin-bottom:3rem;text-align:center}
+.login-logo em{color:#e63329;font-style:normal}
+
+.login-card{background:#0a0a0f;border:1px solid rgba(255,255,255,0.08);padding:2.5rem;border-radius:8px}
+
+.login-title{font-size:1.4rem;font-weight:700;letter-spacing:-0.02em;margin-bottom:0.4rem;color:#f0f0f5}
+.login-sub{font-size:0.72rem;color:#888;margin-bottom:2rem;letter-spacing:0.02em}
+
+.error-box{background:rgba(230,51,41,0.08);border:1px solid rgba(230,51,41,0.25);color:#e63329;font-size:0.72rem;padding:0.75rem 1rem;margin-bottom:1.5rem;display:none;letter-spacing:0.02em;border-radius:4px}
+.error-box.show{display:block}
+
+.field{display:flex;flex-direction:column;gap:0.4rem;margin-bottom:1.2rem}
+.field label{font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:#888;font-weight:600}
+.field input{background:#0f0f17;border:1px solid rgba(255,255,255,0.08);color:#f0f0f5;font-family:'Inter',sans-serif;font-size:0.85rem;padding:0.8rem 1rem;outline:none;transition:border-color 0.15s;width:100%;border-radius:4px}
+.field input:focus{border-color:#e63329}
+.field input::placeholder{color:#555}
+
+.btn-submit{width:100%;background:#e63329;color:#fff;font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:0.9rem;border:none;cursor:pointer;transition:opacity 0.15s,transform 0.1s;margin-top:0.5rem;border-radius:4px}
+.btn-submit:hover{opacity:0.88;transform:translateY(-1px)}
+.btn-submit:active{transform:translateY(0)}
+
+.login-footer{text-align:center;margin-top:2rem;font-size:0.68rem;color:#555;letter-spacing:0.02em}
+.login-footer a{color:#888;transition:color 0.15s}
+.login-footer a:hover{color:#f0f0f5}
+
+.status-bar{position:fixed;bottom:0;left:0;right:0;border-top:1px solid rgba(255,255,255,0.05);background:#0a0a0f;padding:0.5rem 1.5rem;display:flex;align-items:center;justify-content:space-between;font-size:0.62rem;color:#555;letter-spacing:0.06em;z-index:10}
+.status-bar-left{display:flex;align-items:center;gap:0.8rem}
+.status-dot{width:5px;height:5px;border-radius:50%;background:#4ade80;box-shadow:0 0 5px #4ade80;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 5px #4ade80}50%{opacity:0.5;box-shadow:0 0 10px #4ade80}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.login-wrap{animation:fadeUp 0.4s ease both}
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="login-wrap">
+    <div class="login-logo">plain<em>.direct</em></div>
+
+    <div class="login-card">
+      <div class="login-title">Sign in</div>
+      <div class="login-sub">Enter your credentials to access the DMARC portal</div>
+
+      <div class="error-box" id="error-box">
+        Invalid email or password. Please try again.
+      </div>
+
+      <form method="POST" action="/login" id="login-form">
+        <div class="field">
+          <label>Email address</label>
+          <input type="email" name="email" placeholder="you@company.com" required autocomplete="email" autofocus/>
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input type="password" name="password" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;" required autocomplete="current-password"/>
+        </div>
+        <button type="submit" class="btn-submit" id="submit-btn">Sign in &rarr;</button>
+      </form>
+    </div>
+
+    <div class="login-footer">
+      <a href="https://plain.direct">&larr; Back to plain.direct</a>
+    </div>
+  </div>
+</div>
+
+<div class="status-bar">
+  <div class="status-bar-left">
+    <div class="status-dot"></div>
+    <span>PLAIN.DIRECT &middot; SECURE LOGIN</span>
+  </div>
+  <span id="clock"></span>
+</div>
+
+<script>
+var params = new URLSearchParams(window.location.search);
+if (params.get('error')) {
+  document.getElementById('error-box').classList.add('show');
+}
+var cl = document.getElementById('clock');
+function tc() { if(cl) cl.textContent = new Date().toLocaleTimeString('en-GB') + ' UTC'; }
+tc(); setInterval(tc, 1000);
+document.getElementById('login-form').addEventListener('submit', function() {
+  var btn = document.getElementById('submit-btn');
+  btn.textContent = 'Signing in...';
+  btn.style.opacity = '0.7';
+});
+</script>
+</body>
+</html>

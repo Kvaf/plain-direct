@@ -1,0 +1,11 @@
+[
+  {
+    "id": 1774570968396,
+    "email": "admin@plain.direct",
+    "password_hash": "$2a$12$QvqziOwKbHY/UnlQ4j8EsuHNu3t/DMVs/EmdjKdXxFbc5bSSmdWSG",
+    "name": "",
+    "role": "admin",
+    "created_at": "2026-03-27T00:22:48.662Z",
+    "last_login": null
+  }
+]
