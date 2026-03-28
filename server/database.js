@@ -84,6 +84,23 @@ db.exec(`
   CREATE INDEX IF NOT EXISTS idx_reports_domain ON dmarc_reports(domain_id);
   CREATE INDEX IF NOT EXISTS idx_reports_begin ON dmarc_reports(begin_date);
   CREATE INDEX IF NOT EXISTS idx_records_country ON dmarc_records(country_code);
+
+  CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    email TEXT UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    role TEXT DEFAULT 'viewer',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  );
 `);
+
+// Seed admin user if no users exist
+import bcrypt from 'bcryptjs';
+const userCount = db.prepare('SELECT COUNT(*) as count FROM users').get().count;
+if (userCount === 0) {
+  const hash = bcrypt.hashSync('admin123', 10);
+  db.prepare('INSERT INTO users (email, password_hash, role) VALUES (?, ?, ?)').run('admin@plain.direct', hash, 'admin');
+  console.log('[INIT] Admin user created: admin@plain.direct / admin123');
+}
 
 export default db;

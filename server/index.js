@@ -5,6 +5,8 @@ import cron from 'node-cron';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import routes, { seedDemoData } from './routes.js';
+import authRoutes, { requireAuth } from './auth.js';
+import adminRoutes from './admin.js';
 import { fetchReports } from './fetcher.js';
 import db from './database.js';
 
@@ -15,23 +17,29 @@ const PORT = process.env.PORT || 3004;
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 
-// API routes
-app.use('/api', routes);
+// Health check (public)
+app.get('/api/health', (req, res) => {
+  const reportCount = db.prepare('SELECT COUNT(*) as count FROM dmarc_reports').get().count;
+  res.json({ status: 'ok', reports: reportCount, uptime: process.uptime() });
+});
 
-// Manual fetch trigger
-app.post('/api/fetch-now', async (req, res) => {
+// Auth routes (public)
+app.use('/api/auth', authRoutes);
+
+// Admin routes (requires admin)
+app.use('/api/admin', adminRoutes);
+
+// Protected API routes (requires auth)
+app.use('/api', requireAuth, routes);
+
+// Manual fetch trigger (requires auth)
+app.post('/api/fetch-now', requireAuth, async (req, res) => {
   try {
     const result = await fetchReports();
     res.json({ success: true, result });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
-});
-
-// Health check
-app.get('/api/health', (req, res) => {
-  const reportCount = db.prepare('SELECT COUNT(*) as count FROM dmarc_reports').get().count;
-  res.json({ status: 'ok', reports: reportCount, uptime: process.uptime() });
 });
 
 // Serve static files in production

@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { getAuthHeaders } from './useAuth';
 
 const API_BASE = '/api';
 
@@ -11,7 +12,9 @@ export function useApi(endpoint, deps = []) {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`${API_BASE}${endpoint}`);
+      const res = await fetch(`${API_BASE}${endpoint}`, {
+        headers: getAuthHeaders(),
+      });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
       setData(json);
@@ -32,8 +35,16 @@ export function useApi(endpoint, deps = []) {
 export async function apiPost(endpoint, body) {
   const res = await fetch(`${API_BASE}${endpoint}`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
     body: JSON.stringify(body),
+  });
+  return res.json();
+}
+
+export async function apiDelete(endpoint) {
+  const res = await fetch(`${API_BASE}${endpoint}`, {
+    method: 'DELETE',
+    headers: getAuthHeaders(),
   });
   return res.json();
 }
